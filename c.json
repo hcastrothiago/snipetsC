@@ -1,0 +1,61 @@
+{
+	"Create output": {
+		"prefix": "ptf",
+		"body": "printf(\"${1}\", ${2});",
+		"description": "cria um printf em C"
+	},
+	"Create input": {
+		"prefix": "scf",
+		"body": "scanf(\"%${1}\", &${2});",
+		"description": "cria um scanf em C"
+	},
+	"Create structure of main function": {
+		"prefix": "runc",
+		"body": [
+			"#include <stdio.h>",
+			"#include <stdlib.h>",
+			"#include <string.h>",
+			"\n",
+			"int main(int argc, char *argv[])",
+			"{",
+			"\t${1}\n",
+			"\treturn 0;",
+			"}"
+		],
+		"description": "cria uma estrutura completa para C"
+	},
+	"Create struct in C": {
+		"prefix": "cstruct",
+		"body": [
+			"typedef struct {",
+			"\t${1}//Campos da estrutura",
+			"} ${2:NomeDaEstrutura};"
+		],
+		"description": "cria uma struct em C"
+	},
+	"Create list in C":{
+		"prefix": "clist",
+		"body": [
+			"typedef struct node",
+			"{",
+			"\tint data;",
+			"\tstruct node *next;",
+			"} Node;"
+		]
+	},
+	"stdio":{
+		"prefix": "stdio",
+		"body": "#include <stdio.h>",
+		"description": "inclui a lib stdio"
+	},
+	"stdlib":{
+		"prefix": "stdlib",
+		"body": "#include <stdlib.h>",
+		"description": "inclui a lib stdlib"
+	},
+	"stringh":{
+		"prefix": "string",
+		"body": "#include <string.h>",
+		"description": "inclui a lib string"
+	}
+}
