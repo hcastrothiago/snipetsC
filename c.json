@@ -27,9 +27,9 @@
 	"Create struct in C": {
 		"prefix": "cstruct",
 		"body": [
-			"typedef struct {",
-			"\t${1}//Campos da estrutura",
-			"} ${2:NomeDaEstrutura};"
+			"typedef struct ${1}{",
+			"\t${2}//fields",
+			"} ${3:StructName};"
 		],
 		"description": "cria uma struct em C"
 	},
