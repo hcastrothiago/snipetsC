@@ -1,61 +1,294 @@
 {
+	"arvore": {
+	  "prefix": "arvore",
+	  "body": [
+		"criar_no",
+		"inserir_no",
+		"busca_larg",
+		"busca_prof",
+		"imprimir",
+		"inserir_pai",
+		"buscar_pai",
+		"liberar_memoria",
+		"remover_no"
+	  ],
+	  "description": "etapas de criação de arvore comum"
+	},
+	"criar_no": {
+	  "prefix": "criar_no",
+	  "body": [
+		"No *criar_no() {",
+		"    Pessoa *p = (Pessoa *)malloc(sizeof(Pessoa));",
+		"    No *node = (No *)malloc(sizeof(No));",
+		"",
+		"    printf(\"Digite o nome: \");",
+		"    scanf(\" %s\", p->nome);",
+		"    printf(\"Digite a idade: \");",
+		"    scanf(\"%d\", &p->idade);",
+		"",
+		"    node->pessoa = p;",
+		"    node->filho1 = NULL;",
+		"    node->filho2 = NULL;",
+		"    node->filho3 = NULL;",
+		"",
+		"    return node;",
+		"}"
+	  ],
+	  "description": "Função para criar um novo nó"
+	},
+	"inserir_no": {
+	  "prefix": "inserir_no",
+	  "body": [
+		"void inserir_no(No *pai, No *novo) {",
+		"    if (pai->filho1 == NULL) {",
+		"        pai->filho1 = novo;",
+		"        return;",
+		"    }",
+		"",
+		"    if (pai->filho2 == NULL) {",
+		"        pai->filho2 = novo;",
+		"        return;",
+		"    }",
+		"",
+		"    if (pai->filho3 == NULL) {",
+		"        pai->filho3 = novo;",
+		"        return;",
+		"    }",
+		"",
+		"    printf(\"Não inseriu. Excesso de filhos.\\n\");",
+		"}"
+	  ],
+	  "description": "Função para inserir um novo nó em um pai"
+	},
+	"busca_larg": {
+	  "prefix": "busca_larg",
+	  "body": [
+		"No *busca_larg(No *node, char *nome) {",
+		"    if (node == NULL) return NULL;",
+		"",
+		"    if (strcmp(node->pessoa->nome, nome) == 0) {",
+		"        return node;",
+		"    }",
+		"",
+		"    No *f1, *f2, *f3;",
+		"    f1 = node->filho1;",
+		"    f2 = node->filho2;",
+		"    f3 = node->filho3;",
+		"",
+		"    if ((f1 != NULL) && (strcmp(f1->pessoa->nome, nome) == 0)) {",
+		"        return f1;",
+		"    }",
+		"",
+		"    if ((f2 != NULL) && (strcmp(f2->pessoa->nome, nome) == 0)) {",
+		"        return f2;",
+		"    }",
+		"",
+		"    if ((f3 != NULL) && (strcmp(f3->pessoa->nome, nome) == 0)) {",
+		"        return f3;",
+		"    }",
+		"",
+		"    No *res = NULL;",
+		"    res = busca_larg(node->filho1, nome);",
+		"    if (res != NULL) {",
+		"        return res;",
+		"    }",
+		"",
+		"    res = busca_larg(node->filho2, nome);",
+		"    if (res != NULL) {",
+		"        return res;",
+		"    }",
+		"",
+		"    res = busca_larg(node->filho3, nome);",
+		"    if (res != NULL) {",
+		"        return res;",
+		"    }",
+		"",
+		"    return NULL;",
+		"}"
+	  ],
+	  "description": "Função de busca em largura em uma árvore"
+	},
+	"busca_prof": {
+	  "prefix": "busca_prof",
+	  "body": [
+		"No *busca_prof(No *node, char *nome) {",
+		"    if (node == NULL) return NULL;",
+		"",
+		"    if (strcmp(node->pessoa->nome, nome) == 0) {",
+		"        return node;",
+		"    }",
+		"",
+		"    No *res = NULL;",
+		"    res = busca_prof(node->filho1, nome);",
+		"    if (res != NULL) {",
+		"        return res;",
+		"    }",
+		"",
+		"    res = busca_prof(node->filho2, nome);",
+		"    if (res != NULL) {",
+		"        return res;",
+		"    }",
+		"",
+		"    res = busca_prof(node->filho3, nome);",
+		"    if (res != NULL) {",
+		"        return res;",
+		"    }",
+		"",
+		"    return NULL;",
+		"}"
+	  ],
+	  "description": "Função de busca em profundidade em uma árvore"
+	},
+	"imprimir": {
+	  "prefix": "imprimir",
+	  "body": [
+		"void imprimir(No *node, int tab) {",
+		"    if (node == NULL) return;",
+		"",
+		"    for (int i = 0; i < tab; i++) {",
+		"        printf(\"\\t\");",
+		"    }",
+		"",
+		"    printf(\"%s - %d\\n\", node->pessoa->nome, node->pessoa->idade);",
+		"    imprimir(node->filho1, tab + 1);",
+		"    imprimir(node->filho2, tab + 1);",
+		"    imprimir(node->filho3, tab + 1);",
+		"}"
+	  ],
+	  "description": "Função para imprimir uma árvore"
+	},
+	"inserir_pai": {
+	  "prefix": "inserir_pai",
+	  "body": [
+		"void inserir_pai(No **node) {",
+		"    if (*node == NULL) {",
+		"        *node = criar_no();",
+		"        return;",
+		"    }",
+		"",
+		"    char nome_pai[30];",
+		"    printf(\"Digite o nome do nó pai: \");",
+		"    scanf(\" %s\", nome_pai);",
+		"",
+		"    No *pai = busca_prof(*node, nome_pai);",
+		"    if (pai == NULL) {",
+		"        printf(\"Nó não encontrado\\n\");",
+		"        return;",
+		"    }",
+		"",
+		"    No *filho = criar_no();",
+		"    inserir_no(pai, filho);",
+		"}"
+	  ],
+	  "description": "Função para inserir um nó pai"
+	},
+	"buscar_pai": {
+	  "prefix": "buscar_pai",
+	  "body": [
+		"void buscar_pai(No *root) {",
+		"    char nome[30];",
+		"    printf(\"Digite o nome da pessoa: \");",
+		"    scanf(\" %s\", nome);",
+		"    No *no = busca_prof(root, nome);",
+		"    if (no == NULL) {",
+		"        printf(\"Pessoa não encontrada\\n\");",
+		"        return;",
+		"    }",
+		"    printf(\"%s - %d\\n\", no->pessoa->nome, no->pessoa->idade);",
+		"}"
+	  ],
+	  "description": "Função para buscar um nó pai"
+	},
+	"liberar_memoria": {
+	  "prefix": "liberar_memoria",
+	  "body": [
+		"void liberar_memoria(No *node) {",
+		"    if (node == NULL) return;",
+		"",
+		"    liberar_memoria(node->filho1);",
+		"    liberar_memoria(node->filho2);",
+		"    liberar_memoria(node->filho3);",
+		"",
+		"    free(node->pessoa);",
+		"    free(node);",
+		"}"
+	  ],
+	  "description": "Função para liberar a memória de uma árvore"
+	},
 	"Create output": {
-		"prefix": "ptf",
-		"body": "printf(\"${1}\", ${2});",
-		"description": "cria um printf em C"
+	  "prefix": "ptf",
+	  "body": [
+		"$TM_SELECTED_TEXT;",
+		"printf(\"${1}\", $TM_SELECTED_TEXT)",
+	  ],
+	  "description": "cria um printf em C"
 	},
 	"Create input": {
-		"prefix": "scf",
-		"body": "scanf(\"%${1}\", &${2});",
-		"description": "cria um scanf em C"
+	  "prefix": "scf",
+	  "body": [
+		"$TM_SELECTED_TEXT;",
+		"scanf(\"%${1}\", &$TM_SELECTED_TEXT)"
+	  ],
+	  "description": "cria um scanf em C"
 	},
 	"Create structure of main function": {
-		"prefix": "runc",
-		"body": [
-			"#include <stdio.h>",
-			"#include <stdlib.h>",
-			"#include <string.h>",
-			"\n",
-			"int main(int argc, char *argv[])",
-			"{",
-			"\t${1}\n",
-			"\treturn 0;",
-			"}"
-		],
-		"description": "cria uma estrutura completa para C"
+	  "prefix": "runc",
+	  "body": [
+		"#include <stdio.h>",
+		"#include <stdlib.h>",
+		"#include <locale.h>",
+		"\n",
+		"int main(int argc, char *argv[])",
+		"{",
+		"\tsetlocale(LC_ALL, \"Portuguese_Brazil\");",
+		"\t${1}\n",
+		"\treturn 0;",
+		"}"
+	  ],
+	  "description": "cria uma estrutura completa para C"
 	},
 	"Create struct in C": {
-		"prefix": "cstruct",
-		"body": [
-			"typedef struct ${1}{",
-			"\t${2}//fields",
-			"} ${3:StructName};"
-		],
-		"description": "cria uma struct em C"
+	  "prefix": "struct",
+	  "body": [
+		"typedef struct ${1:StructName}{",
+		"\t${2}//fields",
+		"} ${3:StructType};"
+	  ],
+	  "description": "cria uma struct em C"
 	},
-	"Create list in C":{
-		"prefix": "clist",
-		"body": [
-			"typedef struct node",
-			"{",
-			"\tint data;",
-			"\tstruct node *next;",
-			"} Node;"
-		]
+	"Create list in C": {
+	  "prefix": "clist",
+	  "body": [
+		"typedef struct node",
+		"{",
+		"\tint data;",
+		"\tstruct node *next;",
+		"} Node;"
+	  ]
 	},
-	"stdio":{
-		"prefix": "stdio",
-		"body": "#include <stdio.h>",
-		"description": "inclui a lib stdio"
+	"Create for in C": {
+	  "prefix": "for",
+	  "body": [
+		"for(int i = 0; i < sizeof(${1}); i++)",
+		"{",
+		"\t${2}//Code here",
+		"}"
+	  ],
+	  "description": "cria um laço for"
 	},
-	"stdlib":{
-		"prefix": "stdlib",
-		"body": "#include <stdlib.h>",
-		"description": "inclui a lib stdlib"
+	"stdio": {
+	  "prefix": "stdio",
+	  "body": "#include <stdio.h>",
+	  "description": "inclui a lib stdio"
 	},
-	"stringh":{
-		"prefix": "string",
-		"body": "#include <string.h>",
-		"description": "inclui a lib string"
+	"stdlib": {
+	  "prefix": "stdlib",
+	  "body": "#include <stdlib.h>",
+	  "description": "inclui a lib stdlib"
+	},
+	"stringh": {
+	  "prefix": "string",
+	  "body": "#include <string.h>",
+	  "description": "inclui a lib string"
 	}
-}
+  }

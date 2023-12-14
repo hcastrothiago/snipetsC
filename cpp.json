@@ -1,0 +1,258 @@
+{
+	"arvore_binaria":{
+		"prefix":"arvore_binaria",
+		"body":[
+			"inserir",
+			"imprimir",
+			"EhFolha",
+			"temFilho",
+			"maiorDaEsquerda",
+			"deletar",
+			"juncao"
+		  ],
+		"description": "métodos a serem implementados"		  
+	},
+	"inserir": {
+	  "prefix": "inserir",
+	  "body": [
+		"void inserir(No_Arvore **raiz, No_Arvore *novoElemento)",
+		"{",
+		"    if (*raiz == NULL)",
+		"    {",
+		"        *raiz = novoElemento;",
+		"        return;",
+		"    }",
+		"    else",
+		"    {",
+		"        if (novoElemento->identificador == (*raiz)->identificador)",
+		"        {",
+		"            printf(\"Elemento Existe!\");",
+		"            return;",
+		"        }",
+		"        else if (novoElemento->identificador < (*raiz)->identificador)",
+		"        {",
+		"            inserir(&(*raiz)->esquerda, novoElemento);",
+		"        }",
+		"        else",
+		"        {",
+		"            inserir(&(*raiz)->direita, novoElemento);",
+		"        }",
+		"    }",
+		"};"
+	  ],
+	  "description": "Inserir elemento em uma árvore binária de pesquisa"
+	},
+	"imprimir": {
+	  "prefix": "imprimir",
+	  "body": [
+		"void imprimir(No_Arvore *raiz)",
+		"{",
+		"    if (raiz == NULL)",
+		"    {",
+		"        return;",
+		"    }",
+		"    else",
+		"    {",
+		"        imprimir(raiz->esquerda);",
+		"        printf(\"%d| \", raiz->identificador);",
+		"        imprimir(raiz->direita);",
+		"    }",
+		"};"
+	  ],
+	  "description": "Imprimir elementos de uma árvore binária de pesquisa"
+	},
+	"EhFolha": {
+	  "prefix": "EhFolha",
+	  "body": [
+		"bool EhFolha(No_Arvore *node)",
+		"{",
+		"    if (node == NULL)",
+		"        return false;",
+		"    if (node->direita == NULL && node->esquerda == NULL)",
+		"        return true;",
+		"    return false;",
+		"}"
+	  ],
+	  "description": "Verificar se um nó é uma folha em uma árvore binária"
+	},
+	"temFilho": {
+	  "prefix": "temFilho",
+	  "body": [
+		"bool temFilho(No_Arvore *node)",
+		"{",
+		"    if (node == NULL)",
+		"        return false;",
+		"    if (node->esquerda == NULL && node->direita != NULL)",
+		"        return true;",
+		"    if (node->esquerda != NULL && node->direita == NULL)",
+		"        return true;",
+		"    return false;",
+		"}"
+	  ],
+	  "description": "Verificar se um nó tem pelo menos um filho em uma árvore binária"
+	},
+	"maiorDaEsquerda": {
+	  "prefix": "maiorDaEsquerda",
+	  "body": [
+		"No_Arvore *maiorDaEsquerda(No_Arvore *node)",
+		"{",
+		"    if (node == NULL)",
+		"        return NULL;",
+		"    if (node->direita == NULL)",
+		"        return node;",
+		"    return (maiorDaEsquerda(node->direita));",
+		"}"
+	  ],
+	  "description": "Encontrar o nó com o maior valor na subárvore à esquerda"
+	},
+	"deletar": {
+	  "prefix": "deletar",
+	  "body": [
+		"No_Arvore *deletar(No_Arvore **raiz, int localizador)",
+		"{",
+		"    if (*raiz == NULL)",
+		"    {",
+		"        return NULL;",
+		"    }",
+		"    if ((*raiz)->identificador == localizador)",
+		"    {",
+		"        No_Arvore *elementoRemovido = *raiz;",
+		"        if (EhFolha(*raiz) == true)",
+		"        {",
+		"            *raiz = NULL;",
+		"        }",
+		"        else if (temFilho(*raiz) == true)",
+		"        {",
+		"            if ((*raiz)->direita != NULL)",
+		"            {",
+		"                *raiz = (*raiz)->direita;",
+		"            }",
+		"            else",
+		"            {",
+		"                *raiz = (*raiz)->esquerda;",
+		"            }",
+		"        }",
+		"        else",
+		"        {",
+		"            No_Arvore *maiorDaEsq = maiorDaEsquerda((*raiz)->esquerda);",
+		"            deletar(raiz, maiorDaEsq->identificador);",
+		"            maiorDaEsq->esquerda = (*raiz)->esquerda;",
+		"            maiorDaEsq->direita = (*raiz)->direita;",
+		"            *raiz = maiorDaEsq;",
+		"        }",
+		"        elementoRemovido->direita = NULL;",
+		"        elementoRemovido->esquerda = NULL;",
+		"        return elementoRemovido;",
+		"    }",
+		"    else",
+		"    {",
+		"        if (localizador > (*raiz)->identificador)",
+		"        {",
+		"            return deletar(&(*raiz)->direita, localizador);",
+		"        }",
+		"        else",
+		"        {",
+		"            return deletar(&(*raiz)->esquerda, localizador);",
+		"        }",
+		"    }",
+		"};"
+	  ],
+	  "description": "Deletar um nó em uma árvore binária de pesquisa"
+	},
+	"juncao": {
+	  "prefix": "juncao",
+	  "body": [
+		"void juncao(No_Arvore **raiz1, No_Arvore **raiz2, No_Arvore **raiz3)",
+		"{",
+		"    while (*raiz1 != NULL)",
+		"    {",
+		"        No_Arvore *removido_Raiz1 = deletar(raiz1, (*raiz1)->identificador);",
+		"        inserir(raiz3, removido_Raiz1);",
+		"    }",
+		"    while (*raiz2 != NULL)",
+		"    {",
+		"        No_Arvore *removido_Raiz2 = deletar(raiz2, (*raiz2)->identificador);",
+		"        inserir(raiz3, removido_Raiz2);",
+		"    }",
+		"    /// juntou as duas Ã¡rvore",
+		"};"
+	  ],
+	  "description": "Juntar duas árvores binárias de pesquisa"
+	},
+	"Create output": {
+	  "prefix": "ptf",
+	  "body": [
+		"$TM_SELECTED_TEXT;",
+		"printf(\"${1}\", $TM_SELECTED_TEXT)",
+	  ],
+	  "description": "cria um printf em C"
+	},
+	"Create input": {
+	  "prefix": "scf",
+	  "body": [
+		"$TM_SELECTED_TEXT;",
+		"scanf(\"%${1}\", &$TM_SELECTED_TEXT)"
+	  ],
+	  "description": "cria um scanf em C"
+	},
+	"Create structure of main function": {
+	  "prefix": "runc",
+	  "body": [
+		"#include <stdio.h>",
+		"#include <stdlib.h>",
+		"#include <locale.h>",
+		"\n",
+		"int main(int argc, char *argv[])",
+		"{",
+		"\tsetlocale(LC_ALL, \"Portuguese_Brazil\");",
+		"\t${1}\n",
+		"\treturn 0;",
+		"}"
+	  ],
+	  "description": "cria uma estrutura completa para C"
+	},
+	"Create struct in C": {
+	  "prefix": "struct",
+	  "body": [
+		"typedef struct ${1:StructName}{",
+		"\t${2}//fields",
+		"} ${3:StructType};"
+	  ],
+	  "description": "cria uma struct em C"
+	},
+	"Create list in C": {
+	  "prefix": "clist",
+	  "body": [
+		"typedef struct node",
+		"{",
+		"\tint data;",
+		"\tstruct node *next;",
+		"} Node;"
+	  ]
+	},
+	"Create for in C": {
+	  "prefix": "for",
+	  "body": [
+		"for(int i = 0; i < sizeof(${1}); i++)",
+		"{",
+		"\t${2}//Code here",
+		"}"
+	  ],
+	  "description": "cria um laço for"
+	},
+	"stdio": {
+	  "prefix": "stdio",
+	  "body": "#include <stdio.h>",
+	  "description": "inclui a lib stdio"
+	},
+	"stdlib": {
+	  "prefix": "stdlib",
+	  "body": "#include <stdlib.h>",
+	  "description": "inclui a lib stdlib"
+	},
+	"stringh": {
+	  "prefix": "string",
+	  "body": "#include <string.h>",
+	  "description": "inclui a lib string"
+	}
+  }
